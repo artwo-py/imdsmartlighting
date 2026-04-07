@@ -11,9 +11,9 @@
     {
       "id": 1,
       "title": "💡 Brilho dos Postes",
-      "description": "Nível de brilho (0-100) de cada poste ao longo do tempo",
+      "description": "Nível de brilho (0-100) de cada poste",
       "type": "timeseries",
-      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 0 },
+      "gridPos": { "h": 14, "w": 12, "x": 0, "y": 0 },
       "datasource": { "type": "postgres", "uid": "" },
       "fieldConfig": {
         "defaults": {
@@ -22,13 +22,13 @@
             "axisCenteredZero": false,
             "axisLabel": "Brilho (%)",
             "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "scheme",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "showPoints": "auto",
-            "spanNulls": false
+            "spanNulls": true
           },
           "min": 0,
           "max": 100,
@@ -38,7 +38,7 @@
       },
       "options": {
         "legend": { "calcs": ["mean", "lastNotNull"], "displayMode": "table", "placement": "bottom" },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+        "tooltip": { "mode": "multi", "sort": "none" }
       },
       "targets": [
         {
@@ -46,7 +46,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time_index AS \"time\", entity_id, brightness FROM mtimdlampservice.etlamp WHERE $__timeFilter(time_index) ORDER BY time_index ASC",
+          "rawSql": "SELECT date_trunc('second', time_index) AS \"time\", entity_id, MAX(brightness) AS brightness FROM mtimdlampservice.etlamp WHERE $__timeFilter(time_index) GROUP BY 1, 2 ORDER BY 1 ASC",
           "refId": "A"
         }
       ]
@@ -65,13 +65,13 @@
             "axisCenteredZero": false,
             "axisLabel": "Lux",
             "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "scheme",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "showPoints": "auto",
-            "spanNulls": false
+            "spanNulls": true
           },
           "min": 0,
           "unit": "lux"
@@ -80,7 +80,7 @@
       },
       "options": {
         "legend": { "calcs": ["mean", "lastNotNull"], "displayMode": "table", "placement": "bottom" },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+        "tooltip": { "mode": "multi", "sort": "none" }
       },
       "targets": [
         {
@@ -88,7 +88,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time_index AS \"time\", entity_id, ambient_light FROM mtimdlampservice.etlamp WHERE $__timeFilter(time_index) ORDER BY time_index ASC",
+          "rawSql": "SELECT date_trunc('second', time_index) AS \"time\", entity_id, MAX(ambient_light) AS ambient_light FROM mtimdlampservice.etlamp WHERE $__timeFilter(time_index) GROUP BY 1, 2 ORDER BY 1 ASC",
           "refId": "A"
         }
       ]
@@ -133,7 +133,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT entity_id AS \"Poste\", status AS \"Status\", brightness AS \"Brilho\", ambient_light AS \"Luz Ambiente\", time_index AS \"Última Atualização\" FROM mtimdlampservice.etlamp WHERE time_index = (SELECT MAX(time_index) FROM mtimdlampservice.etlamp) ORDER BY entity_id ASC",
+          "rawSql": "SELECT t.entity_id AS \"Poste\", t.status AS \"Status\", t.brightness AS \"Brilho\", t.ambient_light AS \"Luz Ambiente\", t.time_index AS \"Última Atualização\" FROM mtimdlampservice.etlamp t INNER JOIN (SELECT entity_id, MAX(time_index) AS max_time FROM mtimdlampservice.etlamp GROUP BY entity_id) latest ON t.entity_id = latest.entity_id AND t.time_index = latest.max_time ORDER BY t.entity_id ASC",
           "refId": "A"
         }
       ]
@@ -175,7 +175,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time_index AS \"time\", entity_id, CASE WHEN motion_detected = true THEN 1 ELSE 0 END AS motion_detected FROM mtimdlampservice.etlamp WHERE $__timeFilter(time_index) ORDER BY time_index ASC",
+          "rawSql": "SELECT date_trunc('second', time_index) AS \"time\", entity_id, MAX(CASE WHEN motion_detected = true THEN 1 ELSE 0 END) AS motion_detected FROM mtimdlampservice.etlamp WHERE $__timeFilter(time_index) GROUP BY 1, 2 ORDER BY 1 ASC",
           "refId": "A"
         }
       ]
