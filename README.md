@@ -58,6 +58,7 @@ senha: admin
 Será solicitado alterar a senha no primeiro acesso.
 
 5. Visualizar o Dashboard
+
 Dashboards → Browse → General → IMD Smart Lighting
 
 Quando houver alterações nos atributos dos dispositivos, os dashboards são automaticamente atualizados.
