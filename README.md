@@ -57,7 +57,7 @@ senha: admin
 
 Será solicitado alterar a senha no primeiro acesso.
 
-5. Visualizar o Dashboard
+Visualizar o Dashboard:
 
 Dashboards → Browse → General → IMD Smart Lighting
 
