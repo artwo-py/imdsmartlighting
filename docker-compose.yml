@@ -112,6 +112,16 @@ services:
     command: >
       sh -c "pip install requests && tail -f /dev/null"
 
+  context-app:
+    build: ./context-app
+    container_name: context-app
+    networks:
+      - fiware_network
+    ports:
+      - "5000:5000"
+    depends_on:
+      - orion
+
 networks:
   fiware_network:
     driver: bridge
