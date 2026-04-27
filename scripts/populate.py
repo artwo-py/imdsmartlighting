@@ -42,12 +42,12 @@ def create_subscription():
         "subject": {
             "entities": [{"idPattern": ".*", "type": "Lamp"}],
             "condition": {
-                "attrs": ["status", "brightness", "ambient_light", "motion_detected"]
+                "attrs": ["status", "brightness", "ambient_light", "motion_detected", "active"]
             }
         },
         "notification": {
             "http": {"url": "http://quantumleap:8668/v2/notify"},
-            "attrs": ["status", "brightness", "ambient_light", "motion_detected"]
+            "attrs": ["status", "brightness", "ambient_light", "motion_detected", "active"]
         }
     }
     headers = {
@@ -87,7 +87,8 @@ def create_lamps(number_of_lamps):
                         { "object_id": "s", "name": "status", "type": "Text" },
                         { "object_id": "b", "name": "brightness", "type": "Number" },
                         { "object_id": "al", "name": "ambient_light", "type": "Number" },
-                        { "object_id": "md", "name": "motion_detected", "type": "Boolean" }
+                        { "object_id": "md", "name": "motion_detected", "type": "Boolean" },
+                        { "object_id": "act", "name": "active", "type": "Boolean" }
                     ]
                 }
             ]
@@ -100,9 +101,10 @@ def create_lamps(number_of_lamps):
         b = random.randint(0, 100)
         al = random.randint(100, 1000)   
         md = random.choice([True, False])
+        act = True
 
         update_url = f"{UPDATE_BASE_URL}?i={device_id}&k={API_KEY}"
-        requests.post(update_url, json={"s": s, "b": b, "al": al, "md": md})
+        requests.post(update_url, json={"s": s, "b": b, "al": al, "md": md, "act": act})
         print(f"Dados enviados para {entity_id}")
 
 if __name__ == "__main__":
