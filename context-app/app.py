@@ -65,7 +65,8 @@ def notify():
 
         update = {
             "status": {"value": status, "type": "Text"},
-            "brightness": {"value": brightness, "type": "Number"}
+            "brightness": {"value": brightness, "type": "Number"},
+            "active": {"value": True, "type": "Boolean"}
         }
 
         try:
