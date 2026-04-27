@@ -99,7 +99,7 @@ def create_lamps(number_of_lamps):
 
         s = random.choice(["ON", "OFF"])
         b = random.randint(0, 100)
-        al = random.randint(100, 1000)   
+        al = random.randint(0, 800)   
         md = random.choice([True, False])
         act = True
 
