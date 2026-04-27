@@ -19,7 +19,7 @@ def create_subscription():
         "subject": {
             "entities": [{"idPattern": ".*", "type": "Lamp"}],
             "condition": {
-                "attrs": ["ambient_light", "motion_detected"]
+                "attrs": ["ambient_light", "motion_detected", "active"]
             }
         },
         "notification": {

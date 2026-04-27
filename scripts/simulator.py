@@ -37,7 +37,7 @@ def simulate():
         lamp_ids = get_lamps()
 
         for entity_id in lamp_ids:
-            device_id = device_id = entity_id.lower()
+            device_id = entity_id.lower()
             # 0-400 = noite | 401 - 800 = dia
             ambient_light = random.randint(0, 800) 
             motion = random.choice([True, False])
